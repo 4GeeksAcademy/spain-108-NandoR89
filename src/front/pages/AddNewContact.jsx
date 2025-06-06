@@ -4,12 +4,11 @@ import { Link } from "react-router-dom"
 
 export const AddNewContact = () => {
 
-  const userName = "NandoR89"
-  const host = 'https://playground.4geeks.com/contact'
-  const getUrl = `${host}/agendas/${userName}`
-  const postUrlUser = `${host}/agendas/${userName}`
-  const postUrl = `${host}/agendas/${userName}/contacts`
-
+  const userName = "Eva123"
+  const host = `https://playground.4geeks.com/contact/agendas`
+  const getUrl = `${host}/${userName}`
+  const postUrlUser = `${host}/${userName}`
+  const postUrlContacts = `${host}/${userName}/contacts`
 
   const [contactName, setContactName] = useState('')
   const [contactPhoneNumber, setContactPhoneNumber] = useState('')
@@ -22,45 +21,93 @@ export const AddNewContact = () => {
   const handlePhone = event => setContactPhoneNumber(event.target.value)
   const handleAddress = event => setContactAdress(event.target.value)
 
-  const getContacts = async () => {
+  const postNewContact = async (userData) => {
     try {
-      const response = await fetch(getUrl)
-      if (!response.ok && response.status === 404) {
-        addUser()
-        return
+      const response = await fetch(postUrlContacts, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData)
+      })
+      if (!response.ok) {
+        console.error("Error al añadir el contacto: ", response.status)
+        throw error
       }
       const data = await response.json()
-      setContacts(Array.isArray(data) ? data : data.contacts || [])
+      return data
     } catch (error) {
-      console.error("Error al cargar las tareas", error)
+      console.error("Error al crear el contacto", error.message)
     }
   }
+
+  // const getContact = async () => {
+  //   try {
+  //     const response = await fetch(getUrl)
+  //     if (!response.ok) {
+  //       console.error(`${response.status}`)
+  //     }
+  //     const data = await response.json()
+  //     return data
+  //   }
+  //   catch (error) {
+  //     console.error('Error al importar los contactos: ', error.message)
+  //   }
+  //   }
+  //   getContact()
 
   const addUser = async () => {
     try {
-      const response = await fetch(postUrlUser, {
-        method: "POST",
-        body: JSON.stringify({}),
-        headers: {
-          "Content-Type": "application/json"
+      const checkUser = await fetch(getUrl)
+      if (checkUser.status === 404) {
+        const createUser = await fetch(getUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" }
+        })
+        if (!createUser.ok) {
+          console.error("Error al crear el usuario")
         }
-      })
-      if (response.ok) {
-        getContacts()
       }
-    } catch (error) {
-      console.error("Error al crear el contacto", error)
+    }
+    catch (error) {
+      console.error("Error en verificar el usuario", error)
     }
   }
-
 
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    setContactName('')
-    setContactPhoneNumber('')
-    setContactEmail('')
-    setContactAdress('')
+    const userData = {
+      name: contactName,
+      phone: contactPhoneNumber,
+      email: contactEmail,
+      address: contactAdress,
+    }
+    
+    if (
+      !contactName.trim() &&
+      !contactPhoneNumber.trim() &&
+      !contactEmail.trim() &&
+      !contactAdress.trim()
+    ) {
+      setContactName('')
+      setContactPhoneNumber('')
+      setContactEmail('')
+      setContactAdress('')
+      return
+    }
+
+    try {
+      await addUser()
+      await postNewContact(userData)
+
+      setContactName('')
+      setContactPhoneNumber('')
+      setContactEmail('')
+      setContactAdress('')
+    } catch (error) {
+      console.error("Error en el formulario:", error);
+    }
   }
 
   return (
