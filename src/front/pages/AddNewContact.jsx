@@ -66,33 +66,33 @@ export const AddNewContact = () => {
   return (
     <div className="container m-auto">
       <form onSubmit={handleSubmit}>
-        <div className="row">
+        <div className="row mb-2">
           <div className="col-md-10 col-lg-8 col-xl-6">
-            <label htmlFor="fullname" className="form-label">Full Name</label>
-            <input onChange={handleFullName} id="fullname" type="text" className="form-control" value={contactName} placeholder="Enter full name" />
+            <label htmlFor="fullname" className="form-label">Nombre y Apellidos</label>
+            <input onChange={handleFullName} id="fullname" type="text" className="form-control" value={contactName} placeholder="Introduce tu nombre completo" />
+          </div>
+        </div>
+        <div className="row mb-2">
+          <div className="col-md-10 col-lg-8 col-xl-6">
+            <label htmlFor="" className="form-label">Correo electrónico</label>
+            <input onChange={handleEmail} type="email" className="form-control" value={contactEmail} placeholder="Introduce tu email" />
+          </div>
+        </div>
+        <div className="row mb-2">
+          <div className="col-md-10 col-lg-8 col-xl-6">
+            <label htmlFor="" className="form-label">Teléfono</label>
+            <input onChange={handlePhone} type="tel" className="form-control" value={contactPhoneNumber} placeholder="Introduce tu número de teléfono" />
           </div>
         </div>
         <div className="row">
           <div className="col-md-10 col-lg-8 col-xl-6">
-            <label htmlFor="" className="form-label">Email</label>
-            <input onChange={handleEmail} type="email" className="form-control" value={contactEmail} placeholder="Enter email" />
+            <label htmlFor="" className="form-label">Dirección</label>
+            <input onChange={handleAddress} type="text" className="form-control" value={contactAdress} placeholder="Introduce tu dirección postal" />
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-10 col-lg-8 col-xl-6">
-            <label htmlFor="" className="form-label">Phone</label>
-            <input onChange={handlePhone} type="tel" className="form-control" value={contactPhoneNumber} placeholder="Enter phone" />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-10 col-lg-8 col-xl-6">
-            <label htmlFor="" className="form-label">Address</label>
-            <input onChange={handleAddress} type="text" className="form-control" value={contactAdress} placeholder="Enter address" />
-          </div>
-        </div>
-        <button type="submit" className="btn btn-primary col-12 col-md-10 col-lg-8 col-xl-6 mt-4">Save</button>
+        <button type="submit" className="btn btn-primary col-12 col-md-10 col-lg-8 col-xl-6 mt-4">Guardar</button>
       </form>
-      <Link to="/contact">or get back to contact</Link>
+      <Link to="/contact">o regresa a tus contactos</Link>
     </div>
   )
 }

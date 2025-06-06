@@ -22,8 +22,8 @@ export const Contact = (item) => {
   return (
     <div className="container mt-3">
       <div className="d-flex justify-content-end">
-        <Link to="/addnewcontact" className="btn btn-success m-2">
-          Add New Contact
+        <Link to="/addnewcontact" className="btn btn-warning m-2">
+          Añade un nuevo contacto
         </Link>
       </div>
       <div key={item.id} className="card my-3">
@@ -33,10 +33,10 @@ export const Contact = (item) => {
           </div>
           <div className="col-md-8 d-flex">
             <div className="card-body">
-              <h5 className="card-title">Full Name</h5>
-              <p className="card-text">Address</p>
-              <p className="card-text">Phone</p>
-              <p className="card-text">Email</p>
+              <h5 className="card-title">Nombre y Apellidos</h5>
+              <p className="card-text">Dirección</p>
+              <p className="card-text">Teléfono</p>
+              <p className="card-text">Correo electrónico</p>
             </div>
             <div className="mt-3 me-3">
               <i onClick={handleEdit} className="fa-solid fa-pen-to-square fa-xl me-3" style={{ cursor: "pointer" }}></i>
