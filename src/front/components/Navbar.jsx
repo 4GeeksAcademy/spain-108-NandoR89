@@ -6,14 +6,20 @@ export const Navbar = () => {
 		<nav className="navbar navbar-light bg-light">
 			<div className="container">
 				<Link to="/">
-					<span className="navbar-brand mb-0 h1">React Boilerplate</span>
+					<img src="/public/images/logo-star-wars.jpg" alt="Logo" style={{ height: '40px' }} />
 				</Link>
 				<div className="ml-auto">
-					<Link to="/contact" className="btn btn-success me-5">
-						Contactos
+					<Link to="/planets">
+						<span className="navbar-brand mb-0 h1">Planetas</span>
 					</Link>
-					<Link to="/demo">
-						<button className="btn btn-primary">Check the Context in action</button>
+					<Link to="/character">
+						<span className="navbar-brand mb-0 h1">Personajes</span>
+					</Link>
+					<Link to="/starships">
+						<span className="navbar-brand mb-0 h1">Naves</span>
+					</Link>
+					<Link to="/contactslist">
+						<span className="navbar-brand mb-0 h1">Contactos</span>
 					</Link>
 				</div>
 			</div>

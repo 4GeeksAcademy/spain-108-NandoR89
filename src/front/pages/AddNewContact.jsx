@@ -1,14 +1,14 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import useGlobalReducer from "../hooks/useGlobalReducer.jsx"
+import { postNewContact } from "../services/contact.js"
+import { addUser } from "../services/contact.js"
+import { getContact } from "../services/contact.js"
 
 
 export const AddNewContact = () => {
 
-  const userName = "Eva123"
-  const host = `https://playground.4geeks.com/contact/agendas`
-  const getUrl = `${host}/${userName}`
-  const postUrlUser = `${host}/${userName}`
-  const postUrlContacts = `${host}/${userName}/contacts`
+  const { dispatch } = useGlobalReducer()
 
   const [contactName, setContactName] = useState('')
   const [contactPhoneNumber, setContactPhoneNumber] = useState('')
@@ -20,59 +20,6 @@ export const AddNewContact = () => {
   const handleEmail = event => setContactEmail(event.target.value)
   const handlePhone = event => setContactPhoneNumber(event.target.value)
   const handleAddress = event => setContactAdress(event.target.value)
-
-  const postNewContact = async (userData) => {
-    try {
-      const response = await fetch(postUrlContacts, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(userData)
-      })
-      if (!response.ok) {
-        console.error("Error al añadir el contacto: ", response.status)
-        throw error
-      }
-      const data = await response.json()
-      return data
-    } catch (error) {
-      console.error("Error al crear el contacto", error.message)
-    }
-  }
-
-  // const getContact = async () => {
-  //   try {
-  //     const response = await fetch(getUrl)
-  //     if (!response.ok) {
-  //       console.error(`${response.status}`)
-  //     }
-  //     const data = await response.json()
-  //     return data
-  //   }
-  //   catch (error) {
-  //     console.error('Error al importar los contactos: ', error.message)
-  //   }
-  //   }
-  //   getContact()
-
-  const addUser = async () => {
-    try {
-      const checkUser = await fetch(getUrl)
-      if (checkUser.status === 404) {
-        const createUser = await fetch(getUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" }
-        })
-        if (!createUser.ok) {
-          console.error("Error al crear el usuario")
-        }
-      }
-    }
-    catch (error) {
-      console.error("Error en verificar el usuario", error)
-    }
-  }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -99,7 +46,10 @@ export const AddNewContact = () => {
 
     try {
       await addUser()
-      await postNewContact(userData)
+      const contactList = await postNewContact(userData)
+      if (contactList) {
+        dispatch({type: contacts, payload: contactList})
+      }
 
       setContactName('')
       setContactPhoneNumber('')
@@ -143,3 +93,8 @@ export const AddNewContact = () => {
     </div>
   )
 }
+
+
+// useNavigate()
+
+// useParams()
