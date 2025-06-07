@@ -89,7 +89,7 @@ export const AddNewContact = () => {
         </div>
         <button type="submit" className="btn btn-primary col-12 col-md-10 col-lg-8 col-xl-6 mt-4">Guardar</button>
       </form>
-      <Link to="/contact">o regresa a tus contactos</Link>
+      <Link to="/contactslist">o regresa a tus contactos</Link>
     </div>
   )
 }

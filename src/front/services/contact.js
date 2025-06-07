@@ -1,4 +1,4 @@
-const user = "fernando";
+const user = "Eva123";
 const host = `https://playground.4geeks.com/contact/agendas`;
 const getUrl = `${host}/${user}`;
   // const postUrlUser = `${host}/${userName}`
@@ -28,7 +28,7 @@ export const getContact = async () => {
       `https://playground.4geeks.com/contact/agendas/${user}`
     );
     if (response.status === 404) {
-      // todo: llamar al fetch que crea el usuario
+      addUser()
     }
     const data = await response.json();
     console.log(data);
