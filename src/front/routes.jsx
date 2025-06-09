@@ -15,6 +15,7 @@ import { Planets } from "./pages/Planets.jsx";
 import { Character } from "./pages/Character.jsx";
 import { Starships } from "./pages/Starships.jsx";
 
+
 export const router = createBrowserRouter(
     createRoutesFromElements(
     // CreateRoutesFromElements function allows you to build route elements declaratively.

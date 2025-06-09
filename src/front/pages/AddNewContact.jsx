@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx"
 import { postNewContact } from "../services/contact.js"
 import { addUser } from "../services/contact.js"
@@ -14,7 +14,7 @@ export const AddNewContact = () => {
   const [contactPhoneNumber, setContactPhoneNumber] = useState('')
   const [contactEmail, setContactEmail] = useState('')
   const [contactAdress, setContactAdress] = useState('')
-  const [contacts, setContacts] = useState([])
+  const navigate = useNavigate()
 
   const handleFullName = event => setContactName(event.target.value)
   const handleEmail = event => setContactEmail(event.target.value)
@@ -46,15 +46,13 @@ export const AddNewContact = () => {
 
     try {
       await addUser()
-      const contactList = await postNewContact(userData)
-      if (contactList) {
-        dispatch({type: contacts, payload: contactList})
-      }
-
-      setContactName('')
-      setContactPhoneNumber('')
-      setContactEmail('')
-      setContactAdress('')
+      await postNewContact(userData)
+      const newContact = await getContact()
+      navigate("/contactslist")
+      if (newContact) {
+        dispatch({type: "contacts", payload: newContact})
+      }      
+      
     } catch (error) {
       console.error("Error en el formulario:", error);
     }
@@ -66,25 +64,25 @@ export const AddNewContact = () => {
         <div className="row mb-2">
           <div className="col-md-10 col-lg-8 col-xl-6">
             <label htmlFor="fullname" className="form-label">Nombre y Apellidos</label>
-            <input onChange={handleFullName} id="fullname" type="text" className="form-control" value={contactName} placeholder="Introduce tu nombre completo" />
+            <input onChange={handleFullName} id="fullname" type="text" className="form-control" value={contactName} placeholder="Introduce el nombre completo" />
           </div>
         </div>
         <div className="row mb-2">
           <div className="col-md-10 col-lg-8 col-xl-6">
             <label htmlFor="" className="form-label">Correo electrónico</label>
-            <input onChange={handleEmail} type="email" className="form-control" value={contactEmail} placeholder="Introduce tu email" />
+            <input onChange={handleEmail} type="email" className="form-control" value={contactEmail} placeholder="Introduce el email" />
           </div>
         </div>
         <div className="row mb-2">
           <div className="col-md-10 col-lg-8 col-xl-6">
             <label htmlFor="" className="form-label">Teléfono</label>
-            <input onChange={handlePhone} type="tel" className="form-control" value={contactPhoneNumber} placeholder="Introduce tu número de teléfono" />
+            <input onChange={handlePhone} type="tel" className="form-control" value={contactPhoneNumber} placeholder="Introduce el número de teléfono" />
           </div>
         </div>
         <div className="row">
           <div className="col-md-10 col-lg-8 col-xl-6">
             <label htmlFor="" className="form-label">Dirección</label>
-            <input onChange={handleAddress} type="text" className="form-control" value={contactAdress} placeholder="Introduce tu dirección postal" />
+            <input onChange={handleAddress} type="text" className="form-control" value={contactAdress} placeholder="Introduce la dirección postal" />
           </div>
         </div>
         <button type="submit" className="btn btn-primary col-12 col-md-10 col-lg-8 col-xl-6 mt-4">Guardar</button>

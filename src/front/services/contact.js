@@ -1,26 +1,25 @@
-const user = "Eva123";
+const user = "fernando";
 const host = `https://playground.4geeks.com/contact/agendas`;
 const getUrl = `${host}/${user}`;
-  // const postUrlUser = `${host}/${userName}`
-  // const postUrlContacts = `${host}/${userName}/contacts`
+// const postUrlUser = `${host}/${userName}`
+// const postUrlContacts = `${host}/${userName}/contacts`
 
 export const addUser = async () => {
-    try {
-      const checkUser = await fetch(getUrl)
-      if (checkUser.status === 404) {
-        const createUser = await fetch(getUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" }
-        })
-        if (!createUser.ok) {
-          console.error("Error al crear el usuario")
-        }
+  try {
+    const checkUser = await fetch(getUrl);
+    if (checkUser.status === 404) {
+      const createUser = await fetch(getUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!createUser.ok) {
+        console.error("Error al crear el usuario");
       }
     }
-    catch (error) {
-      console.error("Error en verificar el usuario", error)
-    }
+  } catch (error) {
+    console.error("Error en verificar el usuario", error);
   }
+};
 
 export const getContact = async () => {
   try {
@@ -28,7 +27,7 @@ export const getContact = async () => {
       `https://playground.4geeks.com/contact/agendas/${user}`
     );
     if (response.status === 404) {
-      addUser()
+      addUser();
     }
     const data = await response.json();
     console.log(data);
@@ -58,5 +57,43 @@ export const postNewContact = async (userData) => {
     return (data = getContact());
   } catch (error) {
     console.error("Error al crear el contacto", error.message);
+  }
+};
+
+export const editContact = async (id, userData) => {
+  const user = "fernando";
+  try {
+    const response = await fetch(
+      `https://playground.4geeks.com/contact/agendas/${user}/contacts/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      }
+    );
+    if (!response.ok) {
+      console.error("Error al editar el contacto: ", response.status);
+      throw error;
+    }
+    return await response.json();
+  } catch {
+    console.log("Error al editar el contacto");
+  }
+};
+
+export const deleteContact = async (item) => {
+  try {
+    const response = await fetch(
+      `https://playground.4geeks.com/contact/agendas/fernando/contacts/${item.id}`,
+      { method: "DELETE" }
+    );
+    if (response.ok) {
+      return true;
+    }
+  } catch (error) {
+    console.log("Error al eliminar el usuario.", error);
+    return false
   }
 };

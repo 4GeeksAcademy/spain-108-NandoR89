@@ -2,25 +2,41 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import useGlobalReducer from "../hooks/useGlobalReducer"
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import { deleteContact, getContact } from "../services/contact";
 
 
-export const ContactsList = (item) => {
+export const ContactsList = (prop) => {
 
-  const { store } = useGlobalReducer()
+  const { store, dispatch } = useGlobalReducer()
+  const [showModal, setShowModal] = useState(false);
+  const [selectedContact, setSelectedContact] = useState(null)
 
   const defaultImage = "https://images.unsplash.com/photo-1748444406895-c284c355e2ef?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-  const imageUrl = item?.image ? item.image : defaultImage
+  const imageUrl = prop?.image ? prop.image : defaultImage
 
-  const [showModal, setShowModal] = useState(false);
+  // const handleEdit = () => {
+  //   onClick={handleEdit} 
+  // }
+
+
   const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
-
-  const handleEdit = () => {
+  const handleShow = (item) => {
+    setSelectedContact(item);
+    setShowModal(true)
   }
 
-  const handleDelete = () => {
-    setShowModal(true)
+  const handleDelete = async () => {
+    try {
+      const result = await deleteContact(selectedContact)
+      if (result) {
+        dispatch({ type: "DELETE_CONTACT", payload: selectedContact.id });
+      }
+      setShowModal(false)    
+      setSelectedContact(null)
+    } catch (error) {
+      console.error ("Error al eliminar: ", error)
+    }
   }
 
   return (
@@ -44,43 +60,44 @@ export const ContactsList = (item) => {
                   <p className="card-text">{item.address}</p>
                 </div>
                 <div className="d-flex align-items-center gap-2">
-                <i class="fa-solid fa-phone"></i>
-                <p className="card-text">{item.phone}</p>
+                  <i class="fa-solid fa-phone"></i>
+                  <p className="card-text">{item.phone}</p>
                 </div>
                 <div className="d-flex align-items-center gap-2">
-                <i class="fa-solid fa-envelope"></i>
-                <p className="card-text">{item.email}</p>
+                  <i class="fa-solid fa-envelope"></i>
+                  <p className="card-text">{item.email}</p>
                 </div>
               </div>
               <div className="mt-3 me-3">
-                <i onClick={handleEdit} className="fa-solid fa-pen-to-square fa-xl me-3" style={{ cursor: "pointer" }}></i>
-                <i onClick={handleShow} className="fa-solid fa-trash fa-xl" style={{ cursor: "pointer" }}></i>
+                <Link to={`/editcontact/${item.id}`}>
+                  <i className="fa-solid fa-pen-to-square fa-xl me-3" style={{ cursor: "pointer" }}></i>
+                </Link>
+                <i onClick={() => handleShow(item)} className="fa-solid fa-trash fa-xl" style={{ cursor: "pointer" }}></i>
               </div>
-              {showModal && (
-                <Modal
-                  show={showModal}
-                  onHide={handleClose}
-                  backdrop="static"
-                  keyboard={false}
-                >
-                  <Modal.Header closeButton>
-                    <Modal.Title>Eliminar Contacto</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    Estás seguro de querer eliminar este contacto?
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                      Cerrar
-                    </Button>
-                    <Button onClick={handleDelete} variant="danger">Eliminar</Button>
-                  </Modal.Footer>
-                </Modal>
-              )
-              }
             </div>
           </div>
         </div>
+      )}
+      {showModal && (
+        <Modal
+          show={showModal}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Eliminar Contacto</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Estás seguro de querer eliminar este contacto?
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Cerrar
+            </Button>
+            <Button onClick={handleDelete} variant="danger">Eliminar</Button>
+          </Modal.Footer>
+        </Modal>
       )}
     </div>
   )
