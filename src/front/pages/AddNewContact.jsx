@@ -63,7 +63,7 @@ export const AddNewContact = () => {
 
       if (id) {
         await putContact(id, userData)
-          dispatch({ type: "EDIT_CONTACT", payload: id, ...userData })
+        dispatch({ type: "EDIT_CONTACT", payload: id, ...userData })
       } else {
         await postNewContact(userData)
       }

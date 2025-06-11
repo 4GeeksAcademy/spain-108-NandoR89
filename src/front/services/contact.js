@@ -60,23 +60,6 @@ export const postNewContact = async (userData) => {
   }
 };
 
-export const getContactById = async (id) => {
-  try {
-    const response = await fetch(
-      `https://playground.4geeks.com/contact/agendas/${user}/contacts/${id}` 
-    )
-
-    if (!response.ok) {
-      throw new Error("Error al obtener el contacto")
-    }
-
-    return await response.json()
-  } catch (error) {
-    console.error("Error:", error)
-    return null
-  }
-}
-
 export const putContact = async (id, userData) => {
   try {
     const response = await fetch(
