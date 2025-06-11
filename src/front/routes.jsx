@@ -36,6 +36,7 @@ export const router = createBrowserRouter(
         <Route path="/starships" element={<Starships />} />
         <Route path="/contactslist" element={<ContactsList />} />
         <Route path="/addnewcontact" element={<AddNewContact />} />
+        <Route path="/editcontact/:id" element={<AddNewContact />} />
       
       </Route>
     )

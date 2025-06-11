@@ -1,14 +1,14 @@
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx"
-import { postNewContact } from "../services/contact.js"
+import { postNewContact, getContact, putContact } from "../services/contact.js"
 import { addUser } from "../services/contact.js"
-import { getContact } from "../services/contact.js"
+import storeReducer from "../store.js"
 
 
 export const AddNewContact = () => {
 
-  const { dispatch } = useGlobalReducer()
+  const { store, dispatch } = useGlobalReducer()
 
   const [contactName, setContactName] = useState('')
   const [contactPhoneNumber, setContactPhoneNumber] = useState('')
@@ -21,6 +21,20 @@ export const AddNewContact = () => {
   const handlePhone = event => setContactPhoneNumber(event.target.value)
   const handleAddress = event => setContactAdress(event.target.value)
 
+  const { id } = useParams()
+
+  useEffect(() => {
+    if (id) {
+      const editContact = store.contacts.find(contact => contact.id === parseInt(id))
+      if (editContact) {
+        setContactName(editContact.name),
+          setContactEmail(editContact.email),
+          setContactPhoneNumber(editContact.phone),
+          setContactAdress(editContact.address)
+      }
+    }
+  }, [id])
+
   const handleSubmit = async (event) => {
     event.preventDefault()
 
@@ -30,7 +44,7 @@ export const AddNewContact = () => {
       email: contactEmail,
       address: contactAdress,
     }
-    
+
     if (
       !contactName.trim() &&
       !contactPhoneNumber.trim() &&
@@ -46,13 +60,18 @@ export const AddNewContact = () => {
 
     try {
       await addUser()
-      await postNewContact(userData)
+
+      if (id) {
+        await putContact(id, userData)
+          dispatch({ type: "EDIT_CONTACT", payload: id, ...userData })
+      } else {
+        await postNewContact(userData)
+      }
       const newContact = await getContact()
       navigate("/contactslist")
       if (newContact) {
-        dispatch({type: "contacts", payload: newContact})
-      }      
-      
+        dispatch({ type: "contacts", payload: newContact })
+      }
     } catch (error) {
       console.error("Error en el formulario:", error);
     }

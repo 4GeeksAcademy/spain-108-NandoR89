@@ -1,4 +1,4 @@
-const user = "fernando";
+const user = "Fernando";
 const host = `https://playground.4geeks.com/contact/agendas`;
 const getUrl = `${host}/${user}`;
 // const postUrlUser = `${host}/${userName}`
@@ -54,7 +54,7 @@ export const postNewContact = async (userData) => {
       console.error("Error al añadir el contacto: ", response.status);
       throw error;
     }
-    return (data = getContact());
+    return await getContact();
   } catch (error) {
     console.error("Error al crear el contacto", error.message);
   }
@@ -63,7 +63,7 @@ export const postNewContact = async (userData) => {
 export const getContactById = async (id) => {
   try {
     const response = await fetch(
-      `https://playground.4geeks.com/contact/agendas/fernando/contacts/${id}` 
+      `https://playground.4geeks.com/contact/agendas/${user}/contacts/${id}` 
     )
 
     if (!response.ok) {
@@ -77,8 +77,7 @@ export const getContactById = async (id) => {
   }
 }
 
-export const editContact = async (id, userData) => {
-  const user = "fernando";
+export const putContact = async (id, userData) => {
   try {
     const response = await fetch(
       `https://playground.4geeks.com/contact/agendas/${user}/contacts/${id}`,
@@ -103,7 +102,7 @@ export const editContact = async (id, userData) => {
 export const deleteContact = async (item) => {
   try {
     const response = await fetch(
-      `https://playground.4geeks.com/contact/agendas/fernando/contacts/${item.id}`,
+      `https://playground.4geeks.com/contact/agendas/${user}/contacts/${item.id}`,
       { method: "DELETE" }
     );
     if (response.ok) {

@@ -15,13 +15,6 @@ export const ContactsList = (prop) => {
   const defaultImage = "https://e7.pngegg.com/pngimages/69/525/png-clipart-star-wars-yoda-illustration-yoda-emoji-star-wars-sticker-emoji-superhero-war-thumbnail.png"
   const imageUrl = prop.image ? prop.image : defaultImage
 
-  const handleEdit = async (item) => {
-    try {
-    } catch (error) {
-      console.error("Error al editar", error)
-    }
-  }
-
   const handleClose = () => setShowModal(false);
   const handleShow = (item) => {
     setSelectedContact(item);
@@ -52,7 +45,7 @@ export const ContactsList = (prop) => {
         <h1>Agenda de {store.user}</h1>
       </div>
       {store.contacts.map((item, index) => {
-        const backgroundColor = index % 2 !== 0 ? "light" : "secondary-subtle";
+        const backgroundColor = index % 2 === 0 ? "secondary-subtle" : "light"
         return (
           <div key={item.id} className={`card my-3 bg-${backgroundColor}`}>
             <div className="row g-0">
