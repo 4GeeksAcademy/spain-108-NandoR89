@@ -12,7 +12,7 @@ export const Navbar = () => {
 					<Link to="/planets">
 						<span className="navbar-brand mb-0 h1">Planetas</span>
 					</Link>
-					<Link to="/character">
+					<Link to="/characters">
 						<span className="navbar-brand mb-0 h1">Personajes</span>
 					</Link>
 					<Link to="/starships">

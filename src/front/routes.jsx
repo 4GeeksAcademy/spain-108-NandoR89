@@ -12,7 +12,7 @@ import { Demo } from "./pages/Demo";
 import { ContactsList } from "./pages/ContactsList.jsx";
 import { AddNewContact } from "./pages/AddNewContact.jsx";
 import { Planets } from "./pages/Planets.jsx";
-import { Character } from "./pages/Character.jsx";
+import { Characters } from "./pages/Characters.jsx";
 import { Starships } from "./pages/Starships.jsx";
 
 
@@ -32,7 +32,7 @@ export const router = createBrowserRouter(
         <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
         <Route path="/demo" element={<Demo />} />
         <Route path="/planets" element={<Planets />} />
-        <Route path="/character" element={<Character />} />
+        <Route path="/characters" element={<Characters />} />
         <Route path="/starships" element={<Starships />} />
         <Route path="/contactslist" element={<ContactsList />} />
         <Route path="/addnewcontact" element={<AddNewContact />} />
