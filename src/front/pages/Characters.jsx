@@ -9,18 +9,18 @@ export const Characters = () => {
   const { store } = useGlobalReducer()
 
   return (
-
-    <div className="container d-flex justify-content-center gap-2 mt-5">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
+    <div className='bg-dark'>
+    <div className="container d-flex justify-content-center gap-2 my-5">
+      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
         {
           store.characters.map((item) => {
             return (
-              <div class="col">
-                <div key={item.uid} class="card h-100">
-                  <img src={`https://raw.githubusercontent.com/tbone849/star-wars-guide/refs/heads/master/build/assets/img/characters/${item.uid}.jpg`} class="card-img-top" alt="..." />
-                  <div class="card-body">
-                    <h5 class="card-title">{item.name}</h5>
-                    <p class="card-text">URL: {item.url}</p>
+              <div className="col">
+                <div key={item.uid} className="card h-100">
+                  <img src={`https://raw.githubusercontent.com/tbone849/star-wars-guide/refs/heads/master/build/assets/img/characters/${item.uid}.jpg`} className="card-img-top" alt="..." />
+                  <div className="card-body">
+                    <h5 className="card-title">{item.name}</h5>
+                    <p className="card-text">URL: {item.url}</p>
                   </div>
                 </div>
               </div>
@@ -29,6 +29,9 @@ export const Characters = () => {
         }
       </div>
     </div>
+    </div>
+
+
   )
 }
 

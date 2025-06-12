@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 export const Navbar = () => {
 
 	return (
-		<nav className="navbar navbar-light bg-light">
+		<nav className="navbar navbar-dark bg-dark py-3">
 			<div className="container">
 				<Link to="/">
-					<img src="/public/images/logo-star-wars.jpg" alt="Logo" style={{ height: '40px' }} />
+					<img src="https://pngimg.com/d/star_wars_logo_PNG23.png" className="text-light" alt="Logo" style={{ height: '40px' }} />
 				</Link>
 				<div className="ml-auto">
 					<Link to="/planets">

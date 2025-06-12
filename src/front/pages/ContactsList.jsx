@@ -35,7 +35,7 @@ export const ContactsList = (prop) => {
   }
 
   return (
-    <div className="container mt-3">
+    <div className="container my-5">
       <div className="d-flex justify-content-end">
         <Link to="/addnewcontact" className="btn btn-warning m-2">
           Añade un nuevo contacto

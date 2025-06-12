@@ -4,6 +4,8 @@ export const initialStore = () => {
     user: "Fernando",
     contacts: [],
     characters: [],
+    planets: [],
+    starships: [],
   };
 };
 
@@ -20,6 +22,11 @@ export default function storeReducer(store, action = {}) {
           contact => contact.id !== action.payload)};
     case "characters":
       return { ...store, characters: action.payload}
+    case "planets":
+      return { ...store, planets: action.payload}
+    case "starships":
+      return { ...store, starships: action.payload}
+
     default:
       throw Error("Unknown action.");
   }
