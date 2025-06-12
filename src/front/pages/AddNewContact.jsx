@@ -78,7 +78,7 @@ export const AddNewContact = () => {
   }
 
   return (
-    <div className="container m-auto">
+    <div className="container m-auto my-5">
       <div className="d-flex justify-content-between align-items-center bg-warning p-4 rounded">
         <div className="col-md-6 pe-md-4">
           <form onSubmit={handleSubmit}>
