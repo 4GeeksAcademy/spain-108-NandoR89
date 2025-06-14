@@ -119,8 +119,3 @@ export const AddNewContact = () => {
     </div>
   )
 }
-
-
-// useNavigate()
-
-// useParams()

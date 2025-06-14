@@ -11,14 +11,6 @@ import useGlobalReduce from "../hooks/useGlobalReducer.jsx"
 export const Layout = () => {
     const { dispatch } = useGlobalReduce()
 
-    // useEffect(() => {
-    //     const get = async () => {
-    //         const data = await getContact()
-    //         dispatch({ type: "contacts", payload: data })
-    //     }
-    //     get()
-    // }, [])
-
     useEffect(() => {
         const getFetch = async () => {
             const dataContact = await getContact()
@@ -38,6 +30,8 @@ export const Layout = () => {
         }
         getFetch()
     }, [])
+
+    //si la local.store esta vacia hacemos fecch, si no, cogemos la de localStore y se lo pasamos a dispatch
 
     return (
         <ScrollToTop>

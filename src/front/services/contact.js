@@ -1,8 +1,6 @@
 const user = "Fernando";
 const host = `https://playground.4geeks.com/contact/agendas`;
 const getUrl = `${host}/${user}`;
-// const postUrlUser = `${host}/${userName}`
-// const postUrlContacts = `${host}/${userName}/contacts`
 
 export const addUser = async () => {
   try {
