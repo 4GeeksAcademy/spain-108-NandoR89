@@ -14,7 +14,9 @@ import { AddNewContact } from "./pages/AddNewContact.jsx";
 import { Planets } from "./pages/Planets.jsx";
 import { Characters } from "./pages/Characters.jsx";
 import { Starships } from "./pages/Starships.jsx";
-import { Card } from "./pages/Card.jsx";
+import { CharacterCard } from "./pages/CharacterCard.jsx";
+import { PlanetCard } from "./pages/PlanetCard.jsx";
+import { StarshipCard } from "./pages/StarshipCard.jsx";
 
 
 export const router = createBrowserRouter(
@@ -33,11 +35,11 @@ export const router = createBrowserRouter(
         <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
         <Route path="/demo" element={<Demo />} />
         <Route path="/planets" element={<Planets />} />
-        <Route path="/planets/:id" element={<Card />} />
+        <Route path="/planets/:id" element={<PlanetCard />} />
         <Route path="/characters" element={<Characters />} />
-        <Route path="/characters/:id" element={<Card />} />
+        <Route path="/characters/:id" element={<CharacterCard />} />
         <Route path="/starships" element={<Starships />} />
-        <Route path="/starships/:id" element={<Card />} />
+        <Route path="/starships/:id" element={<StarshipCard />} />
         <Route path="/contactslist" element={<ContactsList />} />
         <Route path="/addnewcontact" element={<AddNewContact />} />
         <Route path="/editcontact/:id" element={<AddNewContact />} />

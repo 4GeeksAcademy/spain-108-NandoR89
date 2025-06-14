@@ -46,9 +46,9 @@ export const AddNewContact = () => {
     }
 
     if (
-      !contactName.trim() &&
-      !contactPhoneNumber.trim() &&
-      !contactEmail.trim() &&
+      !contactName.trim() ||
+      !contactPhoneNumber.trim() ||
+      !contactEmail.trim() ||
       !contactAdress.trim()
     ) {
       setContactName('')
@@ -78,40 +78,42 @@ export const AddNewContact = () => {
   }
 
   return (
-    <div className="container m-auto my-5">
-      <div className="d-flex justify-content-between align-items-center bg-warning p-4 rounded">
-        <div className="col-md-6 pe-md-4">
-          <form onSubmit={handleSubmit}>
-            <div className="row mb-2">
-              <div className="col-md-11 col-lg-10 col-xl-9">
-                <label htmlFor="fullname" className="form-label">Nombre y Apellidos</label>
-                <input onChange={handleFullName} id="fullname" type="text" className="form-control" value={contactName} placeholder="Introduce el nombre completo" />
+    <div className="bg-dark">
+      <div className="container min-vh-100 m-auto mt-5">
+        <div className="d-flex justify-content-between align-items-center bg-warning p-4 rounded">
+          <div className="col-md-6 pe-md-4">
+            <form onSubmit={handleSubmit}>
+              <div className="row mb-2">
+                <div className="col-md-11 col-lg-10 col-xl-9">
+                  <label htmlFor="fullname" className="form-label">Nombre y Apellidos</label>
+                  <input onChange={handleFullName} id="fullname" type="text" className="form-control" value={contactName} placeholder="Introduce el nombre completo" />
+                </div>
               </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col-md-11 col-lg-10 col-xl-9">
-                <label htmlFor="" className="form-label">Correo electrónico</label>
-                <input onChange={handleEmail} type="email" className="form-control" value={contactEmail} placeholder="Introduce el email" />
+              <div className="row mb-2">
+                <div className="col-md-11 col-lg-10 col-xl-9">
+                  <label htmlFor="" className="form-label">Correo electrónico</label>
+                  <input onChange={handleEmail} type="email" className="form-control" value={contactEmail} placeholder="Introduce el email" />
+                </div>
               </div>
-            </div>
-            <div className="row mb-2">
-              <div className="col-md-11 col-lg-10 col-xl-9">
-                <label htmlFor="" className="form-label">Teléfono</label>
-                <input onChange={handlePhone} type="tel" className="form-control" value={contactPhoneNumber} placeholder="Introduce el número de teléfono" />
+              <div className="row mb-2">
+                <div className="col-md-11 col-lg-10 col-xl-9">
+                  <label htmlFor="" className="form-label">Teléfono</label>
+                  <input onChange={handlePhone} type="tel" className="form-control" value={contactPhoneNumber} placeholder="Introduce el número de teléfono" />
+                </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col-md-11 col-lg-10 col-xl-9">
-                <label htmlFor="" className="form-label">Dirección</label>
-                <input onChange={handleAddress} type="text" className="form-control" value={contactAdress} placeholder="Introduce la dirección postal" />
+              <div className="row">
+                <div className="col-md-11 col-lg-10 col-xl-9">
+                  <label htmlFor="" className="form-label">Dirección</label>
+                  <input onChange={handleAddress} type="text" className="form-control" value={contactAdress} placeholder="Introduce la dirección postal" />
+                </div>
               </div>
-            </div>
-            <button type="submit" className="btn btn-primary col-md-11 col-lg-10 col-xl-9 mt-4">Guardar</button>
-          </form>
-          <Link to="/contactslist">o regresa a tus contactos</Link>
-        </div>
-        <div className="col-md-6 d-none d-md-block ps-md-4">
-          <img src="https://png.pngtree.com/png-vector/20240204/ourmid/pngtree-star-wars-png-free-download-png-image_11613003.png" alt="imagen de Star Wars" className="img-fluid rounded image-add-contact" />
+              <button type="submit" className="btn btn-primary col-md-11 col-lg-10 col-xl-9 mt-4">Guardar</button>
+            </form>
+            <Link to="/contactslist">o regresa a tus contactos</Link>
+          </div>
+          <div className="col-md-6 d-none d-md-block ps-md-4">
+            <img src="https://png.pngtree.com/png-vector/20240204/ourmid/pngtree-star-wars-png-free-download-png-image_11613003.png" alt="imagen de Star Wars" className="img-fluid rounded image-add-contact" />
+          </div>
         </div>
       </div>
     </div>
