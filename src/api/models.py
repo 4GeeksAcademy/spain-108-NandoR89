@@ -63,6 +63,20 @@ class Planets(db.Model):
     climate = db.Column(db.String)
     terrain = db.Column(db.String)
 
+    def __repr__(self):
+        return f'<Planet {self.name}>'
+
+    def serialize(self):
+        return {"id": self.id,
+                "name": self.name,
+                "diameter": self.diameter,
+                "rotation_period": self.rotation_period,
+                "prbital_period": self.prbital_period,
+                "gravity": self.gravity,
+                "population": self.population,
+                "climate": self.climate,
+                "terrain": self.terrain}
+
 
 class CharacterFavorites(db.Model):
     id = db.Column(db.Integer, primary_key=True)
