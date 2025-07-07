@@ -77,7 +77,7 @@ def users():
         data = request.json
         print(data)
         user = Users()
-        user.email = data.get('email', 'user@email.com').to_lower()
+        user.email = data.get('email', 'user@email.com').lower()
         user.password = data.get('password', '1')
         user.is_active = True
         user.is_admin = True
@@ -109,7 +109,7 @@ def user(id):
         return response_body, 200
     if request.method == 'PUT':
         if claims['user_id'] != id:
-            response_body['message'] = f'El usuario {claims['user.id']} mo tiene permiso para modificar los datos de {id}'
+            response_body['message'] = f'El usuario {claims['user_id']} no tiene permiso para modificar los datos de {id}'
         data = request.json
         user.email = data.get('email', user.email)
         user.password = data.get('password', user.password)
@@ -136,14 +136,14 @@ def follower():
     data = request.json
     if request.method == 'GET':
         followers = db.session.execute(db.select(Followers).where(Followers.follower_id == follower_id)).scalars()
-        response_body['results'] = [row.serielize() for row in followers]
+        response_body['results'] = [row.serialize() for row in followers]
         response_body['message'] = f'Listado de followers del usuario {follower_id}'
         for row in followers:
             print(row)
         return response_body, 200
     if request.method == 'POST':
         following_id = data.get('following_id', None)
-        following = db.session.execute(db.select(Followers).where((Followers.follower_id == follower_id & Followers.following_id == following_id))).scalar()
+        following = db.session.execute(db.select(Followers).where((Followers.follower_id == follower_id, Followers.following_id == following_id))).scalar()
         if following:
             response_body['message'] = f'El usuario {follower_id} ya es seguidor del usuario {following_id}'
             response_body['results'] = None
@@ -166,6 +166,14 @@ def characters():
         rows = db.session.execute(db.select(Characters)).scalars()
         response_body['result'] = [row.serialize() for row in rows]
         return response_body, 200
+    
+
+@api.route('/people/<int:character_id>', methods=['GET'])
+def show_current_character(character_id):
+    character = db.session.execute(db.select(Characters).where(Characters.id == character_id)).scalar()
+    if not character:
+        return jsonify({"message": "Personaje no encontrado"}), 404
+    return jsonify(character.serialize()), 200
 
 
 @api.route('/characterfavorite', methods=['GET'])
@@ -173,7 +181,7 @@ def character_favorite():
     response_body = {}
     if request.method == 'GET':
         response_body['message'] = 'El GET se ha ejecutado correctamente'
-        rows = db.session.execute(db.select(character_favorite)).scalars()
+        rows = db.session.execute(db.select(CharacterFavorites)).scalars()
         response_body['result'] = [row.serialize() for row in rows]
         return response_body, 200
 
@@ -188,7 +196,15 @@ def planets():
         return response_body, 200
 
 
-@api.route('planetsfavorite', methods=['GET'])
+@api.route('/planets/<int:planet_id>', methods=['GET'])
+def show_current_planet(planet_id):
+    planet = db.session.execute(db.select(Planets).where(Planets.id == planet_id)).scalar()
+    if not planet:
+        return jsonify({"message": "Planeta no encontrado"}), 404
+    return jsonify(planet.serialize()), 200
+
+
+@api.route('/planetsfavorite', methods=['GET'])
 def planets_favorite():
     response_body = {}
     if request.method == 'GET':
