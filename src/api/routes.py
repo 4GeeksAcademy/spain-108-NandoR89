@@ -45,7 +45,7 @@ def login():
     access_token = create_access_token(identity=email, additional_claims=claims)
 
     response_body['message'] = 'User logged OK'
-    response_body['acees_token'] = access_token
+    response_body['access_token'] = access_token
     return response_body, 200
 
 
@@ -168,12 +168,17 @@ def characters():
         return response_body, 200
     
 
-@api.route('/people/<int:character_id>', methods=['GET'])
-def show_current_character(character_id):
-    character = db.session.execute(db.select(Characters).where(Characters.id == character_id)).scalar()
-    if not character:
-        return jsonify({"message": "Personaje no encontrado"}), 404
-    return jsonify(character.serialize()), 200
+@api.route('/characters/<int:character_id>', methods=['GET'])
+def get_character(character_id):
+    response_body = {}
+    if request.method == 'GET':
+        row = db.session.execute(db.select(Characters).where(Characters.id == character_id)).scalar()
+        if not row:
+            response_body['message'] = 'Personaje no encontrado'
+            return response_body, 404
+        response_body['message'] = 'Personaje encontrado'
+        response_body['result'] = row.serialize()
+        return response_body, 200
 
 
 @api.route('/characterfavorite', methods=['GET'])
@@ -186,22 +191,17 @@ def character_favorite():
         return response_body, 200
 
 
-@api.route('/planets', methods=['GET'])
-def planets():
+@api.route('/planets/<int:planet_id>', methods=['GET'])
+def get_planet(planet_id):
     response_body = {}
     if request.method == 'GET':
-        response_body['message'] = 'El GET se ha ejecutado correctamente'
-        rows = db.session.execute(db.select(Planets)).scalars()
-        response_body['result'] = [row.serialize() for row in rows]
+        row = db.session.execute(db.select(Planets).where(Planets.id == planet_id)).scalar()
+        if not row:
+            response_body['message'] = 'Planeta no encontrado'
+            return response_body, 404
+        response_body['message'] = 'Planeta encontrado'
+        response_body['result'] = row.serialize()
         return response_body, 200
-
-
-@api.route('/planets/<int:planet_id>', methods=['GET'])
-def show_current_planet(planet_id):
-    planet = db.session.execute(db.select(Planets).where(Planets.id == planet_id)).scalar()
-    if not planet:
-        return jsonify({"message": "Planeta no encontrado"}), 404
-    return jsonify(planet.serialize()), 200
 
 
 @api.route('/planetsfavorite', methods=['GET'])
@@ -212,4 +212,94 @@ def planets_favorite():
         rows = db.session.execute(db.select(PlanetsFavorites)).scalars()
         response_body['result'] = [row.serialize() for row in rows]
         return response_body, 200
-    
+
+
+@api.route('/users/favorites', methods=['GET'])
+@jwt_required()
+def get_user_favorites():
+    response_body = {}
+    claims = get_jwt()
+    user_id = claims.get('user_id')
+    characters_rows = db.session.execute(db.select(CharacterFavorites).where(CharacterFavorites.user_id == user_id)).scalars()
+    characters_result = [row.serialize() for row in characters_rows]
+    planets_rows = db.session.execute(db.select(PlanetsFavorites).where(PlanetsFavorites.user_id == user_id)).scalars()
+    planets_result = [row.serialize() for row in planets_rows]
+
+    response_body['message'] = 'Favoritos del usuario actual'
+    response_body['characters'] = characters_result
+    response_body['planets'] = planets_result
+    return response_body, 200
+
+
+@api.route('/favorite/planet/<int:planet_id>', methods=['POST'])
+@jwt_required()
+def add_favorite_planet(planet_id):
+    response_body = {}
+    claims = get_jwt()
+    user_id = claims.get('user_id')
+    existing = db.session.execute(db.select(PlanetsFavorites).where(PlanetsFavorites.user_id == user_id, PlanetsFavorites.planet_id == planet_id)).scalar()
+    if existing:
+        response_body['message'] = 'Este planeta ya es favorito'
+        return response_body, 400
+    favorite = PlanetsFavorites(user_id=user_id, planet_id=planet_id)
+    db.session.add(favorite)
+    db.session.commit()
+    response_body['message'] = 'Planeta añadido a favoritos'
+    response_body['result'] = favorite.serialize()
+    return response_body, 201
+
+
+@api.route('/favorite/character/<int:character_id>', methods=['POST'])
+@jwt_required()
+def add_favorite_character(character_id):
+    response_body = {}
+    claims = get_jwt()
+    user_id = claims.get('user_id')
+    existing = db.session.execute(
+        db.select(CharacterFavorites).where(
+            CharacterFavorites.user_id == user_id,
+            CharacterFavorites.character_id == character_id
+        )
+    ).scalar()
+    if existing:
+        response_body['message'] = 'Este personaje ya es favorito'
+        return response_body, 400
+    favorite = CharacterFavorites(user_id=user_id, character_id=character_id)
+    db.session.add(favorite)
+    db.session.commit()
+    response_body['message'] = 'Personaje añadido a favoritos'
+    response_body['result'] = favorite.serialize()
+    return response_body, 201
+
+
+@api.route('/favorite/planet/<int:planet_id>', methods=['DELETE'])
+@jwt_required()
+def remove_favorite_planet(planet_id):
+    response_body = {}
+    claims = get_jwt()
+    user_id = claims.get('user_id')
+    favorite = db.session.execute(db.select(PlanetsFavorites).where(PlanetsFavorites.user_id == user_id, PlanetsFavorites.planet_id == planet_id)).scalar()
+    if not favorite:
+        response_body['message'] = 'Planeta no encontrado en favoritos'
+        return response_body, 404
+    db.session.delete(favorite)
+    db.session.commit()
+    response_body['message'] = 'Planeta eliminado de favoritos'
+    return response_body, 200
+
+
+@api.route('/favorite/character/<int:character_id>', methods=['DELETE'])
+@jwt_required()
+def remove_favorite_character(character_id):
+    response_body = {}
+    claims = get_jwt()
+    user_id = claims.get('user_id')
+    favorite = db.session.execute(
+        db.select(CharacterFavorites).where(CharacterFavorites.user_id == user_id, CharacterFavorites.character_id == character_id)).scalar()
+    if not favorite:
+        response_body['message'] = 'Personaje no encontrado en favoritos'
+        return response_body, 404
+    db.session.delete(favorite)
+    db.session.commit()
+    response_body['message'] = 'Personaje eliminado de favoritos'
+    return response_body, 200
