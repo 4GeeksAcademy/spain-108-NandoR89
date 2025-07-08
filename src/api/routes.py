@@ -224,7 +224,6 @@ def get_user_favorites():
     characters_result = [row.serialize() for row in characters_rows]
     planets_rows = db.session.execute(db.select(PlanetsFavorites).where(PlanetsFavorites.user_id == user_id)).scalars()
     planets_result = [row.serialize() for row in planets_rows]
-
     response_body['message'] = 'Favoritos del usuario actual'
     response_body['characters'] = characters_result
     response_body['planets'] = planets_result
@@ -237,8 +236,8 @@ def add_favorite_planet(planet_id):
     response_body = {}
     claims = get_jwt()
     user_id = claims.get('user_id')
-    existing = db.session.execute(db.select(PlanetsFavorites).where(PlanetsFavorites.user_id == user_id, PlanetsFavorites.planet_id == planet_id)).scalar()
-    if existing:
+    exists = db.session.execute(db.select(PlanetsFavorites).where(PlanetsFavorites.user_id == user_id, PlanetsFavorites.planet_id == planet_id)).scalar()
+    if exists:
         response_body['message'] = 'Este planeta ya es favorito'
         return response_body, 400
     favorite = PlanetsFavorites(user_id=user_id, planet_id=planet_id)
@@ -255,13 +254,8 @@ def add_favorite_character(character_id):
     response_body = {}
     claims = get_jwt()
     user_id = claims.get('user_id')
-    existing = db.session.execute(
-        db.select(CharacterFavorites).where(
-            CharacterFavorites.user_id == user_id,
-            CharacterFavorites.character_id == character_id
-        )
-    ).scalar()
-    if existing:
+    exists = db.session.execute(db.select(CharacterFavorites).where(CharacterFavorites.user_id == user_id, CharacterFavorites.character_id == character_id)).scalar()
+    if exists:
         response_body['message'] = 'Este personaje ya es favorito'
         return response_body, 400
     favorite = CharacterFavorites(user_id=user_id, character_id=character_id)
