@@ -17,6 +17,8 @@ import { Starships } from "./pages/Starships.jsx";
 import { CharacterCard } from "./pages/CharacterCard.jsx";
 import { PlanetCard } from "./pages/PlanetCard.jsx";
 import { StarshipCard } from "./pages/StarshipCard.jsx";
+import { SignIn } from "./pages/SignIn.jsx"
+import { RegisterForm } from "./pages/RegisterForm.jsx";
 
 
 export const router = createBrowserRouter(
@@ -43,6 +45,8 @@ export const router = createBrowserRouter(
         <Route path="/contactslist" element={<ContactsList />} />
         <Route path="/addnewcontact" element={<AddNewContact />} />
         <Route path="/editcontact/:id" element={<AddNewContact />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/registerform" element={<RegisterForm />} />
 
       </Route>
     )

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react"
 import useGlobalReducer from '../hooks/useGlobalReducer.jsx';
 
@@ -7,10 +7,15 @@ export const Navbar = () => {
 
 	const { store, dispatch } = useGlobalReducer()
 	const [selectedFavorite, setSelectedFavorite] = useState(null)
+	const navigate = useNavigate()
 
 	const handleDelete = (item) => {
 		dispatch({ type: "deleteFavorite", payload: item })
 		setSelectedFavorite(null)
+	}
+
+	const handleSignIn = () => {
+		navigate("/signin")
 	}
 
 	return (
@@ -46,7 +51,7 @@ export const Navbar = () => {
 								</Link>
 							</li>
 						</ul>
-						<div className="dropdown">
+						<div className="dropdown d-flex gap-3">
 							<button className="btn btn-secondary dropdown-toggle dropdown-toggle position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Favoritos
 								<span className="position-absolute top-0 start-100 translate-middle bg-danger border border-light rounded-circle d-flex align-items-center justify-content-center favorite-badge">
@@ -64,41 +69,69 @@ export const Navbar = () => {
 								))
 								}
 							</ul>
+							<div className="dropdown dropdown-menu-end">
+								<button onClick={handleSignIn} class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									Conexión
+								</button>
+								<ul class="dropdown-menu">
+									<li>
+										<Link className="dropdown-item" to="/">
+											Desconexión
+										</Link>
+									</li>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div className="d-flex">
 					<div className="d-none d-md-flex ml-auto me-5">
-						<Link to="/planets">
-							<span className="navbar-brand mb-0 h1">Planetas</span>
-						</Link>
-						<Link to="/characters">
-							<span className="navbar-brand mb-0 h1">Personajes</span>
-						</Link>
-						<Link to="/starships">
-							<span className="navbar-brand mb-0 h1">Naves</span>
-						</Link>
-						<Link to="/contactslist">
-							<span className="navbar-brand mb-0 h1">Contactos</span>
-						</Link>
-						<div className="dropdown">
-							<button className="btn btn-secondary dropdown-toggle position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-								Favoritos
-								<span className="position-absolute top-0 start-100 translate-middle bg-danger border border-light rounded-circle d-flex align-items-center justify-content-center favorite-badge">
-									<span>{store.favorites.length}</span>
-								</span>
-							</button>
-							<ul className="dropdown-menu">
-								{store.favorites.map((item) => (
-									<li key={item.id}>
-										<span className="dropdown-item d-flex justify-content-between align-items-center">
-											{item}
-											<i className="fa-regular fa-circle-xmark fa-xl" onClick={() => handleDelete(item)}></i>
-										</span>
-									</li>
-								))
-								}
-							</ul>
+						<div>
+							<Link to="/planets">
+								<span className="navbar-brand mb-0 h1">Planetas</span>
+							</Link>
+							<Link to="/characters">
+								<span className="navbar-brand mb-0 h1">Personajes</span>
+							</Link>
+							<Link to="/starships">
+								<span className="navbar-brand mb-0 h1">Naves</span>
+							</Link>
+							<Link to="/contactslist">
+								<span className="navbar-brand mb-0 h1">Contactos</span>
+							</Link>
+						</div>
+						<div>
+							<div className="dropdown d-flex gap-5">
+								<button className="btn btn-secondary dropdown-toggle position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									Favoritos
+									<span className="position-absolute top-0 start-100 translate-middle bg-danger border border-light rounded-circle d-flex align-items-center justify-content-center favorite-badge">
+										<span>{store.favorites.length}</span>
+									</span>
+								</button>
+								<ul className="dropdown-menu">
+									{store.favorites.map((item) => (
+										<li key={item.id}>
+											<span className="dropdown-item d-flex justify-content-between align-items-center">
+												{item}
+												<i className="fa-regular fa-circle-xmark fa-xl" onClick={() => handleDelete(item)}></i>
+											</span>
+										</li>
+									))
+									}
+								</ul>
+								<div className="dropdown">
+									<button onClick={handleSignIn} class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+										Conexión
+									</button>
+									<ul class="dropdown-menu">
+										<li>
+											<Link className="dropdown-item" to="/">
+												Desconexión
+											</Link>
+										</li>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
