@@ -1,7 +1,10 @@
 export const initialStore = () => {
   return {
     message: null,
-    user: "Fernando",
+    user: {},
+    token: null,
+    isLogged: false,
+    currentUser: null,
     contacts: [],
     characters: [],
     planets: [],
@@ -11,54 +14,58 @@ export const initialStore = () => {
     planetCard: {},
     starshipCard: {},
     currentCard: [],
-  };
-};
+  }
+}
 
 export default function storeReducer(store, action = {}) {
   switch (action.type) {
     case "set_hello":
-      return { ...store, message: action.payload };
+      return { ...store, message: action.payload }
+    case "user":
+      return { ...store, user: action.payload }
     case "contacts":
-      return { ...store, contacts: action.payload };
+      return { ...store, contacts: action.payload }
     case "EDIT_CONTACT":
-      return { ...store, contacts: action.payload };
+      return { ...store, contacts: action.payload }
     case "DELETE_CONTACT":
       return {
         ...store,
-        contacts: store.contacts.filter(
-          (contact) => contact.id !== action.payload
-        ),
-      };
+        contacts: store.contacts.filter((contact) => contact.id !== action.payload),
+      }
     case "characters":
-      return { ...store, characters: action.payload };
+      return { ...store, characters: action.payload }
     case "planets":
-      return { ...store, planets: action.payload };
+      return { ...store, planets: action.payload }
     case "starships":
-      return { ...store, starships: action.payload };
+      return { ...store, starships: action.payload }
     case "favorites":
       return {
         ...store,
         favorites: store.favorites.includes(action.payload)
           ? store.favorites.filter((name) => name !== action.payload)
           : [...store.favorites, action.payload],
-      };
-      case "deleteFavorite":
+      }
+    case "deleteFavorite":
       return {
         ...store,
-        favorites: store.favorites.filter(
-          (favorite) => favorite !== action.payload
-        ),
-      };
+        favorites: store.favorites.filter((favorite) => favorite !== action.payload),
+      }
     case "characterCard":
-      return { ...store, characterCard: action.payload };
+      return { ...store, characterCard: action.payload }
     case "planetCard":
-      return { ...store, planetCard: action.payload };
+      return { ...store, planetCard: action.payload }
     case "starshipCard":
-      return { ...store, starshipCard: action.payload };
+      return { ...store, starshipCard: action.payload }
     case "currentCard":
-      return { ...store, currentCard: action.payload };
+      return { ...store, currentCard: action.payload }
+    case "token":
+      return { ...store, token: action.payload }
+    case "isLogged":
+      return { ...store, isLogged: action.payload }
+    case "currentUser":
+      return { ...store, currentUser: action.payload }
 
     default:
-      throw Error("Unknown action.");
+      return store
   }
 }

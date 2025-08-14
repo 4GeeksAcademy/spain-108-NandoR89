@@ -23,8 +23,6 @@ def handle_hello():
     return response_body, 200
 
 
-# Create a route to authenticate your users and return JWTs. The
-# create_access_token() function is used to actually generate the JWT.
 @api.route("/login", methods=["POST"])
 def login():
     response_body = {}
@@ -49,8 +47,6 @@ def login():
     return response_body, 200
 
 
-# Protect a route with jwt_required, which will kick out requests
-# without a valid JWT present.
 @api.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():
