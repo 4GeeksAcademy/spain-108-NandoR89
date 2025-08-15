@@ -172,7 +172,6 @@ class Comments(db.Model):
                 'post_id': self.post_id}
 
 
-
 class Followers(db.Model):
     __tablename__ = 'followers'
     id = db.Column(db.Integer, primary_key=True)

@@ -44,7 +44,7 @@ export const ContactsList = (prop) => {
           </Link>
         </div>
         <div>
-          <h1 className="text-light">Agenda de {store.user}</h1>
+          <h1 className="text-light">Mi Agenda</h1>
         </div>
         {store.contacts.map((item, index) => {
           const backgroundColor = index % 2 === 0 ? "secondary" : "secondary-subtle"

@@ -14,9 +14,16 @@ export const Navbar = () => {
 		setSelectedFavorite(null)
 	}
 
-	const handleSignIn = () => {
-		navigate("/signin")
-	}
+const handleSignIn = () => {
+    if (!store.isLogged) {
+      navigate("/signin")
+      return
+    }
+    sessionStorage.removeItem("token")
+    dispatch({ type: "token", payload: null })
+    dispatch({ type: "isLogged", payload: false })
+    navigate("/")
+  }
 
 	return (
 		<nav className="navbar navbar-dark bg-dark py-3 border-bottom">
@@ -58,29 +65,16 @@ export const Navbar = () => {
 									<span>{store.favorites.length}</span>
 								</span>
 							</button>
-							<ul className="dropdown-menu dropdown-menu-end">
-								{store.favorites.map((item) => (
-									<li key={item.id}>
-										<span className="dropdown-item d-flex justify-content-between align-items-center">
-											{item}
-											<i className="fa-regular fa-circle-xmark fa-xl" onClick={() => handleDelete(item)}></i>
-										</span>
-									</li>
-								))
-								}
-							</ul>
-							<div className="dropdown dropdown-menu-end">
-								<button onClick={handleSignIn} class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-									Conexión
-								</button>
-								<ul class="dropdown-menu">
-									<li>
-										<Link className="dropdown-item" to="/">
-											Desconexión
-										</Link>
-									</li>
-								</ul>
-							</div>
+									{
+										!store.isLogged ?
+											<button onClick={handleSignIn} class="btn btn-primary" type="button">
+												Conexión
+											</button>
+											:
+											<button onClick={handleSignIn} class="btn btn-primary" type="button">
+												Desconexión
+											</button>
+									}
 						</div>
 					</div>
 				</div>
@@ -119,17 +113,17 @@ export const Navbar = () => {
 									))
 									}
 								</ul>
-								<div className="dropdown">
-									<button onClick={handleSignIn} class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-										Conexión
-									</button>
-									<ul class="dropdown-menu">
-										<li>
-											<Link className="dropdown-item" to="/">
+								<div>
+									{
+										!store.isLogged ?
+											<button onClick={handleSignIn} class="btn btn-primary" type="button">
+												Conexión
+											</button>
+											:
+											<button onClick={handleSignIn} class="btn btn-primary" type="button">
 												Desconexión
-											</Link>
-										</li>
-									</ul>
+											</button>
+									}
 								</div>
 							</div>
 						</div>
